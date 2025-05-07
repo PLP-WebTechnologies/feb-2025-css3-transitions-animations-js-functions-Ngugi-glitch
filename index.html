@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CSS Animations & JS localStorage</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin-top: 50px;
+    }
+
+    #animateBtn {
+      padding: 15px 30px;
+      font-size: 18px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.4s ease;
+    }
+
+    #animateBtn:hover {
+      background-color: #45a049;
+    }
+
+    /* CSS animation */
+    .bounce {
+      animation: bounce 0.6s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      30% { transform: translateY(-15px); }
+      50% { transform: translateY(0); }
+      70% { transform: translateY(-7px); }
+      100% { transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Animate Button & Save Preferences</h1>
+  <button id="animateBtn">Click Me!</button>
+  <p id="status"></p>
+
+  <script>
+    const button = document.getElementById('animateBtn');
+    const status = document.getElementById('status');
+
+    // Load preference on page load
+    window.onload = function () {
+      const pref = localStorage.getItem('userClicked');
+      if (pref) {
+        status.textContent = 'Welcome back! You clicked before.';
+      } else {
+        status.textContent = 'Click the button to save your preference.';
+      }
+    };
+
+    // Trigger animation and store preference
+    button.addEventListener('click', () => {
+      button.classList.add('bounce');
+
+      // Remove class after animation ends so it can trigger again
+      button.addEventListener('animationend', () => {
+        button.classList.remove('bounce');
+      }, { once: true });
+
+      // Store user preference
+      localStorage.setItem('userClicked', 'true');
+      status.textContent = 'Preference saved! You clicked the button.';
+    });
+  </script>
+
+</body>
+</html>
